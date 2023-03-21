@@ -32,6 +32,7 @@ func init() {
 func NewConfigWithDefault() Config {
 	c := Config{
 		Profile:      "dev",
+		Cron:         "0 0 1 1 * ?",
 		InjectionUrl: "",
 		WithdrawUrl:  "",
 		Proxy:        "",
@@ -43,6 +44,7 @@ func NewConfigWithDefault() Config {
 
 type Config struct {
 	Profile string `yaml:"profile"` // 执行环境 dev/prod/history/org
+	Cron    string `yaml:"cron"`    // cron表达式
 
 	// 公共配置
 	Proxy      string `yaml:"proxy"`      // 生产环境代理

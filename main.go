@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"sync"
 
 	"github.com/robfig/cron/v3"
 	"lng_fetch_us/config"
@@ -11,7 +10,6 @@ import (
 	"lng_fetch_us/job"
 )
 
-var wg sync.WaitGroup
 var cfg = config.Cfg
 
 func main() {
@@ -24,11 +22,12 @@ func main() {
 }
 
 func registerJob() {
-	// 每月1号凌晨定时任务
-	// cronStr := "0 0 1 1 * ?"
-	cronStr := "0 */5 * * * ?"
+	if len(cfg.Cron) == 0 {
+		panic("Cron表达式为空!")
+	}
+
 	c := newWithSeconds()
-	_, err := c.AddFunc(cronStr, func() {
+	_, err := c.AddFunc(cfg.Cron, func() {
 		RunJob()
 	})
 	if err != nil {
